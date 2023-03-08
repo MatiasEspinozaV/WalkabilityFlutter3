@@ -21,7 +21,7 @@ Future<bool> createUser(username, email, password, cellphone, walkgroup) async {
 
   var body = json.encode(data);
   var response = await http.post(
-    Uri.parse('http://walkabilityrest.cedeus.cl/user/'),
+    Uri.parse('https://walkabilityapi.walk21.com/user/'),
     headers: {"Content-Type": "application/json"},
     body: body,
   );
@@ -41,7 +41,7 @@ Future<bool> createUserContext(gender, ability, age) async {
   String username = await storage.read(key: 'username');
   String token = await storage.read(key: "token");
   final user = await http.get(
-    Uri.parse('http://walkabilityrest.cedeus.cl/user/?username=' + username),
+    Uri.parse('https://walkabilityapi.walk21.com/user/?username=' + username),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -57,7 +57,7 @@ Future<bool> createUserContext(gender, ability, age) async {
     };
     await storage.write(key: "userID", value: userInfo[0]['id'].toString());
     var response = await http.post(
-      Uri.parse('http://walkabilityrest.cedeus.cl/usercontext/'),
+      Uri.parse('https://walkabilityapi.walk21.com/usercontext/'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
@@ -84,7 +84,7 @@ Future<Object> authLog(username, password) async {
     "password": password.text,
   };
   var response = await http.post(
-    Uri.parse('http://walkabilityrest.cedeus.cl/login/'),
+    Uri.parse('https://walkabilityapi.walk21.com/login/'),
     headers: {
       "Content-type": "application/json",
     },
@@ -111,7 +111,7 @@ Future<void> logout() async {
   String token = await storage.read(key: "token");
   String refresh = await storage.read(key: "refresh");
   var response = await http.post(
-      Uri.parse('http://walkabilityrest.cedeus.cl/api/logout/'),
+      Uri.parse('https://walkabilityapi.walk21.com/api/logout/'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
@@ -124,7 +124,7 @@ Future<bool> checkToken() async {
   final storage = new FlutterSecureStorage();
   String refresh = await storage.read(key: "refresh");
   var response = await http.post(
-    Uri.parse('http://walkabilityrest.cedeus.cl/api/token/refresh/'),
+    Uri.parse('https://walkabilityapi.walk21.com/api/token/refresh/'),
     headers: {"Content-Type": "application/json"},
     body: json.encode({"refresh": refresh}),
   );
@@ -142,7 +142,7 @@ Future<bool> checkToken() async {
 /* Function to check if the username on the user register */
 Future<bool> checkUser(username) async {
   final response = await http.get(
-    Uri.parse('http://walkabilityrest.cedeus.cl/username_check/?username=' +
+    Uri.parse('https://walkabilityapi.walk21.com/username_check/?username=' +
         username),
   );
   return !(json.decode(response.body)['code'] == 200);
@@ -162,7 +162,7 @@ Future<bool> createWalkContext(
       await wf.currentWeatherByLocation(location.latitude, location.longitude);
   print(weather.weatherConditionCode);
   var version = await http.get(
-    Uri.parse('http://walkabilityrest.cedeus.cl/version/?country=global'),
+    Uri.parse('https://walkabilityapi.walk21.com/version/?country=global'),
     headers: {"Content-Type": "application/json"},
   );
   print(json.decode(version.body)[0]['id'].toString());
@@ -187,7 +187,7 @@ Future<bool> createWalkContext(
     "countryCode": countryCode
   };
   var response = await http.post(
-    Uri.parse('http://walkabilityrest.cedeus.cl/walkcontext/'),
+    Uri.parse('https://walkabilityapi.walk21.com/walkcontext/'),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -225,7 +225,7 @@ Future<http.Response> createData(walkInfo) async {
     "version": null,
   };
   var response = await http.post(
-    Uri.parse('http://walkabilityrest.cedeus.cl/data/'),
+    Uri.parse('https://walkabilityapi.walk21.com/data/'),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -239,7 +239,7 @@ Future<http.Response> createData(walkInfo) async {
         "value": walkInfo.icons[i],
       };
       await http.post(
-        Uri.parse('http://walkabilityrest.cedeus.cl/datavalue/'),
+        Uri.parse('https://walkabilityapi.walk21.com/datavalue/'),
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer $token"
@@ -274,7 +274,7 @@ Future<void> getWalkContext(walkInfo) async {
   String token = await storage.read(key: "token");
   var response = await http.get(
     Uri.parse(
-        'http://walkabilityrest.cedeus.cl/walkcontext?username=' + username),
+        'https://walkabilityapi.walk21.com/walkcontext?username=' + username),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -308,7 +308,7 @@ Future<http.Response> updateWalkContext(location) async {
   };
   var response = await http.put(
     Uri.parse(
-        'http://walkabilityrest.cedeus.cl/walkcontext/' + walkContext + '/'),
+        'https://walkabilityapi.walk21.com/walkcontext/' + walkContext + '/'),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -323,7 +323,7 @@ Future<Object> getUserContext() async {
   var userID = await storage.read(key: 'userID');
   String token = await storage.read(key: "token");
   var response = await http.get(
-    Uri.parse('http://walkabilityrest.cedeus.cl/usercontext?user=' + userID),
+    Uri.parse('https://walkabilityapi.walk21.com/usercontext?user=' + userID),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -344,7 +344,7 @@ Future<List<Marker>> loadMarker() async {
   String username = await storage.read(key: 'username');
   String token = await storage.read(key: "token");
   var response = await http.get(
-    Uri.parse('http://walkabilityrest.cedeus.cl/data/?username=' + username),
+    Uri.parse('https://walkabilityapi.walk21.com/data/?username=' + username),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -378,7 +378,7 @@ Future<Object> getUserInfo() async {
   String username = await storage.read(key: 'username');
   String token = await storage.read(key: 'token');
   final user = await http.get(
-    Uri.parse('http://walkabilityrest.cedeus.cl/user/?username=' + username),
+    Uri.parse('https://walkabilityapi.walk21.com/user/?username=' + username),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -414,7 +414,7 @@ Future<bool> updateUserInfo(email, password, phone) async {
   };
   print(body);
   var response = await http.put(
-    Uri.parse('http://walkabilityrest.cedeus.cl/user/' + userID + "/"),
+    Uri.parse('https://walkabilityapi.walk21.com/user/' + userID + "/"),
     headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
@@ -437,7 +437,7 @@ Future<bool> updatePassword(password, newPassword) async {
   print(password.text);
   print(newPassword.text);
   var response = await http.put(
-    Uri.parse('http://walkabilityrest.cedeus.cl/password/change-password/'),
+    Uri.parse('https://walkabilityapi.walk21.com/password/change-password/'),
     headers: {'Authorization': 'Bearer ' + token},
     body: {"old_password": password.text, "new_password": newPassword.text},
   );
@@ -450,7 +450,7 @@ Future<bool> updatePassword(password, newPassword) async {
 
 Future<Object> passwordRecovery(username) async {
   var response = await http.post(
-    Uri.parse('http://walkabilityrest.cedeus.cl/req-reset-password/'),
+    Uri.parse('https://walkabilityapi.walk21.com/req-reset-password/'),
     body: {
       "username": username,
       "redirect_url": "http://walkability.walk21.com/passwordRecovery",
@@ -465,7 +465,7 @@ Future<bool> disableWalkEdit() async {
   var walkId = await storage.read(key: 'walkContext');
   var response = await http.get(
     Uri.parse(
-        'http://walkabilityrest.cedeus.cl/disable_auto_add/?walk=' + walkId),
+        'https://walkabilityapi.walk21.com/disable_auto_add/?walk=' + walkId),
   );
   if (response.statusCode == 200) {
     return true;
